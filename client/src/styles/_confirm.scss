@@ -1,0 +1,54 @@
+@import "./constants";
+
+@keyframes open{
+    from{
+        transform:translateY(-10rem) translate(-50%, -50%);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0) translate(-50%, -50%);
+        opacity:1;
+    }
+}
+
+
+.confirm{
+    font-family: $font-family, sans-serif, serif;
+    background-color: #fff;
+    height: max-content;
+    width: 40%;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $swatch_0;
+    border-radius: 10px;
+    padding:1rem;
+    outline: none;
+    animation: open .4s ease;
+
+    p{
+        color:$swatch_5;
+    }
+
+    button{
+        margin-top: 1rem;
+        width: 4rem;
+        height: 2rem;
+        background-color: $swatch_2;
+        color:$swatch_0 ;
+        border-radius: 3px;
+        margin-right: 1rem;
+        font-weight: bold;
+    }
+
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fefefe88;
+}

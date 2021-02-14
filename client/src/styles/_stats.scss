@@ -1,0 +1,91 @@
+.stats{
+    font-family: $font-family, sans-serif, serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span{
+        color:$swatch_3;
+    }
+
+    h1{
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+
+    main{
+        width: 60%;
+        min-width: 50rem;
+        height: max-content;
+        background-color: $swatch_0;
+        border-radius: 20px;
+        box-shadow: 0 0 25px #00000066;
+        padding: 2rem 3rem;
+        position: relative;
+        margin:2rem;
+        display:flex;
+        flex-direction: column;
+    }
+
+    h3{
+        margin-top: 1rem;
+        opacity: .8;
+    }
+
+    section{
+        display: flex;
+
+        aside{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__pie{
+        transform:scale(.7);
+    }
+
+    #desktop{
+        color: rgba(255, 99, 132, 1);
+    }
+
+#mobile{
+    color: rgba(255, 205, 86, 1);
+}
+
+.home{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 1.75rem;
+    // background-color: inherit;
+    color: $swatch_2;
+    position: absolute;
+    top: 2rem;
+    left: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.delete{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    // background-color: inherit;
+    color: $swatch_2;
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+}
