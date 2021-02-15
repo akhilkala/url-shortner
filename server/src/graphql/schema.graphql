@@ -6,13 +6,14 @@ type Query {
 type Mutation {
    login(input:Auth):Res!
    register(input:Auth):Res!
-   addURL(input:addURLInput):Res!
-   deleteURL(id:ID!):Res!
+   addURL(input:addURLInput):URL!
+   deleteURL(id:String!):Res!
 }
 
 input Auth {
-   username:String!
+   email:String!
    password:String!
+   token:String
 }
 
 type Res {

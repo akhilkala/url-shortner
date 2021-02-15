@@ -1,8 +1,10 @@
-import express from "express";
+import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
 import connectDB from "./config/db";
+import redisClient from "./config/redis";
+import redirect from "./config/redirect";
 
 import { ApolloServer, gql } from "apollo-server-express";
 
@@ -18,12 +20,14 @@ const typeDefs = gql(
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-const app = express();
+const app: Application = express();
 dotenv.config();
+app.use(express.json());
 app.use(cors());
 connectDB();
 
 server.applyMiddleware({ app, path: "/graphql" });
+app.use("/:id", redirect);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}...`)
