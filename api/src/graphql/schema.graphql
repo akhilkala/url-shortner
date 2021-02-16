@@ -4,22 +4,8 @@ type Query {
 }
 
 type Mutation {
-   login(input:Auth):Res!
-   register(input:Auth):Res!
    addURL(input:addURLInput):URL!
-   deleteURL(id:String!):Res!
-}
-
-input Auth {
-   email:String!
-   password:String!
-   token:String
-}
-
-type Res {
-   error:String
-   token:String
-   message:String
+   deleteURL(id:String!):URL!
 }
 
 input addURLInput {
