@@ -13,28 +13,6 @@ app.use(express.json());
 app.use(cors());
 connectDB();
 
-app.use("/", (req: Request, res: Response) => {
-  try {
-    if (!process.env.SECRET) throw new Error("Internal Server Error");
-
-    const token = req.body.token;
-
-    if (!token) throw new Error("Auth Failed");
-
-    const user = jwt.verify(token, process.env.SECRET);
-
-    res.status(200).json({
-      error: null,
-      user,
-    });
-  } catch (err) {
-    res.status(401).json({
-      error: err.message,
-      user: null,
-    });
-  }
-});
-
 app.use("/login", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
@@ -82,6 +60,8 @@ app.use(
     try {
       const { username, email, password } = req.body;
 
+      if (!username || !email || !password) throw new Error("Invalid Request");
+
       const exisitngUser = await User.findOne({ email });
 
       if (exisitngUser) {
@@ -113,6 +93,30 @@ app.use(
   }
 );
 
+app.use("/", (req: Request, res: Response) => {
+  try {
+    if (!process.env.SECRET) throw new Error("Internal Server Error");
+
+    const token = req.body.token;
+
+    if (!token) throw new Error("Auth Failed");
+
+    const user = jwt.verify(token, process.env.SECRET);
+
+    res.status(200).json({
+      error: null,
+      user,
+      message: "User Verified",
+    });
+  } catch (err) {
+    res.status(401).json({
+      message: err.message,
+      user: null,
+      error: true,
+    });
+  }
+});
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
     message: err.message,
@@ -121,8 +125,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on port ${process.env.PORT}...`)
-);
+app.listen(6000, () => console.log(`Server running on port 6000...`));
 
 //STUDY ECE

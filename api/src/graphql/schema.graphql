@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-   addURL(input:addURLInput):URL!
+   addURL(name:String!,long:String!,short:String,userID:String!):URL
    deleteURL(id:String!):URL!
 }
 
@@ -15,7 +15,6 @@ input addURLInput {
 }
 
 type URL {
-   id:ID!
    name:String!
    long:String!
    short:String!
@@ -26,6 +25,7 @@ type URL {
 
 type User {
    username:String!
+   email:String!
 }
 
 

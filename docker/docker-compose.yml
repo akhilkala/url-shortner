@@ -2,19 +2,22 @@ version: '3'
 services:
   redis:
     image: 'redis:latest'
-  # auth:
-  #   build:
-  #     dockerfile: ../docker/auth.dev.Dockerfile
-  #     context: ../auth
-  # api:
-  #   build:
-  #     dockerfile: Dockerfile.dev
-  #     context: ./api
-  #   volumes:
-  #     - /app/node_modules
-  #     - ../api:/app
-  #   environment:
-  #     - REDIS_HOST=redis
+  auth:
+    build:
+      dockerfile: ../docker/auth.dev.Dockerfile
+      context: ../auth
+    ports:
+      - 6000:6000
+  api:
+    build:
+      dockerfile: ../docker/api.dev.Dockerfile
+      context: ./api
+    volumes:
+      - /app/node_modules
+      - ../api:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
   # client:
   #   stdin_open: true
   #   build:
@@ -23,3 +26,5 @@ services:
   #   volumes:
   #     - /app/node_modules
   #     - ../client:/app
+
+

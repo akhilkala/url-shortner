@@ -1,10 +1,10 @@
 import Url from "../models/Url";
-import redisClient from "../config/redis";
 
 type AddUrlInput = {
   name: string;
   long: string;
   userID: string;
+  short?: string;
 };
 
 export const getAllUrls = async () => {
@@ -13,22 +13,31 @@ export const getAllUrls = async () => {
 };
 
 export const getUrlByID = async (_: undefined, { id }: { id: string }) => {
-  const url = await Url.findById(id);
+  const url = await Url.find({ short: id });
   return url;
 };
 
 export const addURL = async (
   _: undefined,
-  { name, long, userID }: AddUrlInput
+  { name, long, userID, short }: AddUrlInput
 ) => {
-  const url = await new Url({ name, long, user: userID }).save();
-  redisClient.set(url.short, long, (err, data) => {
-    if (err) throw err;
-  });
+  let url;
+  if (short) {
+    url = await new Url({ name, long, user: userID, short }).save();
+  } else {
+    url = await new Url({ name, long, user: userID }).save();
+  }
+
+  if (!process.env.DOMAIN_NAME) throw new Error("Environment Invalid");
+
+  if (long.includes(process.env.DOMAIN_NAME)) return null;
+
+  //SET IN REDIS HERE
+
   return url;
 };
 
 export const deleteURL = async (_: undefined, { id }: { id: string }) => {
-  const url = await Url.findByIdAndDelete(id);
+  const url = await Url.findOneAndDelete({ short: id });
   return url;
 };

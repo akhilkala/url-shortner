@@ -1,5 +1,4 @@
 import { getAllUrls, getUrlByID, addURL, deleteURL } from "../controllers/url";
-import { login, register } from "../controllers/auth";
 
 export default {
   Query: {
@@ -7,8 +6,6 @@ export default {
     getUrlByID,
   },
   Mutation: {
-    login,
-    register,
     addURL,
     deleteURL,
   },
