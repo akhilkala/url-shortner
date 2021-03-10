@@ -1,43 +1,86 @@
 import Url from "../models/Url";
+import { Request, Response } from "express";
 
-type AddUrlInput = {
-  name: string;
-  long: string;
-  userID: string;
-  short?: string;
-};
-
-export const getAllUrls = async () => {
-  const urls = await Url.find({});
-  return urls;
-};
-
-export const getUrlByID = async (_: undefined, { id }: { id: string }) => {
-  const url = await Url.find({ short: id });
-  return url;
-};
-
-export const addURL = async (
-  _: undefined,
-  { name, long, userID, short }: AddUrlInput
-) => {
-  let url;
-  if (short) {
-    url = await new Url({ name, long, user: userID, short }).save();
-  } else {
-    url = await new Url({ name, long, user: userID }).save();
+export const getAllUrls = async (req: Request, res: Response) => {
+  try {
+    const urls = await Url.find({});
+    res.status(200).json({
+      error: false,
+      urls,
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      urls: null,
+      message: err.message,
+    });
   }
-
-  if (!process.env.DOMAIN_NAME) throw new Error("Environment Invalid");
-
-  if (long.includes(process.env.DOMAIN_NAME)) return null;
-
-  //SET IN REDIS HERE
-
-  return url;
 };
 
-export const deleteURL = async (_: undefined, { id }: { id: string }) => {
-  const url = await Url.findOneAndDelete({ short: id });
-  return url;
+export const getUrlByID = async (req: Request, res: Response) => {
+  try {
+    const url = await Url.find({ short: req.body.id });
+    res.status(200).json({
+      error: false,
+      url,
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      url: null,
+      message: err.message,
+    });
+  }
+};
+
+export const addURL = async (req: Request, res: Response) => {
+  try {
+    const { name, long, user: userID, short } = req.body;
+
+    let url;
+    if (short) {
+      url = await new Url({ name, long, user: userID, short }).save();
+    } else {
+      url = await new Url({ name, long, user: userID }).save();
+    }
+
+    if (!process.env.DOMAIN_NAME) throw new Error("Environment Invalid");
+
+    if (long.includes(process.env.DOMAIN_NAME))
+      return res.status(400).json({
+        error: true,
+        url: null,
+        message: "Invalid Url",
+      });
+
+    //SET IN REDIS HERE
+
+    res.status(200).json({
+      error: false,
+      url,
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      url: null,
+      message: err.message,
+    });
+  }
+};
+
+export const deleteURL = async (req: Request, res: Response) => {
+  try {
+    const url = await Url.findOneAndDelete({ short: req.body.id });
+
+    res.status(200).json({
+      error: false,
+      url,
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      url: null,
+      message: err.message,
+    });
+  }
 };

@@ -15,7 +15,9 @@ export default function AuthProvider({ children }) {
 
   const login = async (email, password) => {};
 
-  const logout = async () => {};
+  const logout = async () => {
+  setCurrentUser(null)
+  };
 
   const value = {
     currentUser,
